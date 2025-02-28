@@ -9,7 +9,7 @@ const client = generateClient<Schema>();
 function App() {
   const [urls, setUrls] = useState<Array<Schema["Todo"]["type"]>>([]);
   const [inputUrl, setInputUrl] = useState("");
-  const { signOut, user } = useAuthenticator();
+  const { user, signOut } = useAuthenticator();
 
   useEffect(() => {
     document.title = "URL Storage - Journey Finder";
