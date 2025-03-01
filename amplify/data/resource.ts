@@ -1,4 +1,5 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
+import { clickStreamFunction } from "../functions/clickdata/resource";
 
 /*== STEP 1 ===============================================================
 The section below creates a Todo database table with a "content" field. Try
@@ -6,14 +7,33 @@ adding a new "isDone" field as a boolean. The authorization rule below
 specifies that any user authenticated via an API key can "create", "read",
 "update", and "delete" any "Todo" records.
 =========================================================================*/
-const schema = a.schema({
-  Todo: a
-    .model({
+const schema = a
+  .schema({
+    clickStreamFunction: a
+      .query()
+      .arguments({
+        name: a.string(),
+      })
+      .returns(a.string())
+      .handler(a.handler.function(clickStreamFunction)),
+    Todo: a.model({
+      id: a.id(),
       content: a.string(),
-    })
-    .authorization((allow) => [allow.owner()]),
-});
-
+    }),
+    clickdata: a
+      .model({
+        clickId: a.id().required(),
+        clickType: a.string().required(),
+        clickedAt: a.string().required(),
+        ip: a.string().required(),
+        userAgent: a.string().required(),
+        linkUrl: a.string().required(),
+        userId: a.string().required(),
+        sessionId: a.string().required(),
+      })
+      .identifier(["clickId", "userId"]),
+  })
+  .authorization((allow) => [allow.owner()]);
 export type Schema = ClientSchema<typeof schema>;
 
 export const data = defineData({
