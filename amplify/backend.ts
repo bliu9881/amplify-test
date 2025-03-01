@@ -17,8 +17,8 @@ const clickstreamfunctionUrlObj =
     authType: FunctionUrlAuthType.NONE,
   });
 
-backend.addOutput({
-  custom: {
-    clickstreamfunctionUrl: clickstreamfunctionUrlObj.url,
-  },
-});
+// backend.addOutput({
+//   custom: {
+//     clickstreamfunctionUrl: clickstreamfunctionUrlObj.url,
+//   },
+// });
